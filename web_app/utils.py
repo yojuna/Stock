@@ -67,7 +67,7 @@ class describe_data:
 		
 		# fig.canvas.mpl_connect('motion_notify_event', onmotion)
 
-		st.plotly_chart(fig, figwidth=1100,height=900)
+		# st.plotly_chart(fig, figwidth=1100,height=900)
 
 		# plt.show()
 
