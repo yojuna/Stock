@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Registration Form{% endblock %}
+
+{% block content %}
+    <form method="POST">
+    {{ form.csrf_token }}
+    <p>
+        {{ form.input_ticker.label }}{{ form.input_ticker(size=20) }}
+    </p>
+    <p>
+        {{ form.input_start_date.label }}{{ form.input_start_date(size=20) }}
+    </p>
+    <p>
+        {{ form.input_end_date.label }}{{ form.input_end_date(size=20) }}
+    </p>
+    <p>
+        {{ form.input_interval.label }}{{ form.input_interval(size=20) }}
+    </p>
+    <p>{{ form.download() }} {{ form.download.label }}</p>
+    <input type="submit" value="Submit">
+    </form>
+{% endblock %}
