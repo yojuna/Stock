@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Charting</title>
+
+</head>
+<body>
+	<!-- <div>
+		<canvas id="myChart"></canvas>
+	</div> -->
+	<div class="row">
+		<div class="align-self-center">
+			<div class="container">
+			<div class="chart-container" style="position: relative; height:80vh; width:95vw">
+				<canvas id="myChart"></canvas>
+				<br>
+			</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- chart.js CDN script -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script>
+		// var labels_var = {{ dates }} does not work and throws 
+		// "Uncaught SyntaxError: expected expression, got '&'" error
+		// have to unpack the strings and treat them as done below
+		var labels_var = [{% for item in dates %}"{{ item }}",{% endfor %}]
+		var data_var = {{ adj_close }}
+		const data = {
+		  labels: labels_var,
+		  datasets: [{
+		    label: 'Adj Close',
+		    backgroundColor: 'rgb(255, 99, 132)',
+		    borderColor: 'rgb(255, 99, 132)',
+		    data: data_var
+		  }]
+		};
+		const config = {
+			type: 'line',
+			data,
+			options: {
+				responsive: true,
+    			maintainAspectRatio: false
+			}
+		};
+
+		var myChart = new Chart(
+		document.getElementById('myChart'),
+		config
+		);
+	</script>
+
+</body>
+</html>

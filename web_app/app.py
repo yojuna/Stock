@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_wtf import FlaskForm
 from wtforms import TextField, BooleanField
 from datetime import datetime, timedelta
@@ -11,26 +11,24 @@ app.config['DEBUG'] = True
 app.config['TESTING'] = True
 
 
-default_start = str(datetime.now().year) + "-" + str(datetime.now().month) + "-" + str(datetime.now().day-1)
-default_end = str(datetime.now().year) + "-" + str(datetime.now().month) + "-" + str(datetime.now().day)
+default_start = str(datetime.now().year) + "-" + str(datetime.now().month) + "-" + str(datetime.now().day-2)
+default_end = str(datetime.now().year) + "-" + str(datetime.now().month) + "-" + str(datetime.now().day-1)
 
-
-@app.route('/')
-def index():
-    return redirect(url_for('data_request'))
-    # return render_template('requestForm.html')
-
-# More powerful approach using WTForms
 class DataRequestForm(FlaskForm):
     input_ticker = TextField('Ticker', default = 'TATAMOTORS.NS')
     input_start_date = TextField('Start Date', default = default_start)
     input_end_date = TextField('End Date', default=default_end)
     input_interval = TextField('Interval', default='5m')
     download = BooleanField('Download Data')
+    generate_chart = BooleanField('Generate Chart')
+
+@app.route('/')
+def index():
+    return redirect(url_for('data_request'))
+
 
 @app.route('/data_request', methods=['GET', 'POST'])
 def data_request():
-    error = ""
     form = DataRequestForm(request.form)
 
     if request.method == 'POST':
@@ -39,27 +37,21 @@ def data_request():
         input_end_date = form.input_end_date.data
         input_interval = form.input_interval.data
         download = form.download.data
+        generate_chart = form.generate_chart.data
 
-        print('**********')
-        print(input_ticker)
-        print(input_start_date)
-        print(input_end_date)
-        print(input_interval)
-        print(download)
-        print('**********')        
-
-        if len(input_ticker) == 0 or len(input_start_date) == 0 or len(input_end_date) == 0 or len(input_interval) == 0:
-            error = "Please supply all fields"
-        else:
-            # print(input_ticker)
-            # print(download)
+        try:
             d = describe_data(input_ticker, input_start_date, input_end_date, input_interval, download)
-            d.get_data()
-            # d.plot_data()
-            # return redirect(url_for('data_request'))
+            data_frame = d.get_data()
 
-    return render_template('requestForm.html', form=form, message=error)
-    # return render_template('requestForm.html', message=error)
+            if generate_chart:
+                labels = list(data_frame['date_time'])
+                values = list(data_frame['Adj Close'])
+                return render_template('chart.html', dates=labels, adj_close=values)
+        except:
+            print('error aa rela hai')
+            return redirect(url_for('data_request'))
+
+    return render_template('requestForm.html', default_start=default_start, default_end=default_end)
 
 
 if __name__ == "__main__":

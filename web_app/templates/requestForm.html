@@ -8,40 +8,49 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>heloo</title>
   </head>
   <body>
-    <h1>Hello, world!</h1>
-    <div>
-      <form action="{{ url_for('data_request')}}" method="POST">
-      <!-- <form method="POST"> -->
-        <div class="form-group">
-          <small id="input_ticker_small" class="form-text text-muted">Ticker</small>
-          <label for="input_ticker">Input Ticker</label>
-          <input type="text" class="form-control" id="input_ticker" name="input_ticker" aria-describedby="input_ticker" placeholder="TATAMOTORS.NS">
-        </div>
-        <div class="form-group">
-          <small id="input_start_date_small" class="form-text text-muted">Start Date</small>
-          <label for="input_start_date">Start Date</label>
-          <input type="text" class="form-control" id="input_start_date" name="input_start_date" aria-describedby="input_start_date">
-        </div>
-        <div class="form-group">
-          <small id="input_end_date_small" class="form-text text-muted">End Date</small>
-          <label for="input_end_date">End Date</label>
-          <input type="text" class="form-control" id="input_end_date" name="input_end_date" aria-describedby="input_end_date">
-        </div>
-        <div class="form-group">
-          <small id="input_interval_small" class="form-text text-muted">Interval</small>
-          <label for="input_interval">Interval</label>
-          <input type="text" class="form-control" id="input_interval" name="input_interval" aria-describedby="input_interval" placeholder="5m">
-        </div>
-        <div class="form-group form-check">
-          <input type="checkbox" class="form-check-input" id="download" name="download" value="true">
-          <label class="form-check-label" for="download">Download Excel File</label>
-        </div>
-        <!-- <input type="submit" value="Submit"> -->
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+    <br>
+    <br>
+    <br>
+    <div class="container">
+      <div class="justify-content-md-center">
+        <div>
+          <form method="POST">
+            <div class="form-group">
+              <small id="input_ticker_small" class="form-text text-muted">Ticker</small>
+              <!-- <label for="input_ticker">Input Ticker</label> -->
+              <input type="text" class="form-control" id="input_ticker" name="input_ticker" aria-describedby="input_ticker" value="TATAMOTORS.NS">
+            </div>
+            <div class="form-group">
+              <small id="input_start_date_small" class="form-text text-muted">Start Date</small>
+              <!-- <label for="input_start_date">Start Date</label> -->
+              <input type="text" class="form-control" id="input_start_date" name="input_start_date" aria-describedby="input_start_date" value= {{ default_start }}>
+            </div>
+            <div class="form-group">
+              <small id="input_end_date_small" class="form-text text-muted">End Date</small>
+              <!-- <label for="input_end_date">End Date</label> -->
+              <input type="text" class="form-control" id="input_end_date" name="input_end_date" aria-describedby="input_end_date" value= {{ default_end }}>
+            </div>
+            <div class="form-group">
+              <small id="input_interval_small" class="form-text text-muted">Interval</small>
+              <!-- <label for="input_interval">Interval</label> -->
+              <input type="text" class="form-control" id="input_interval" name="input_interval" aria-describedby="input_interval" value="5m">
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="download" name="download" value="true">
+              <label class="form-check-label" for="download">Download Excel File</label>
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="generate_chart" name="generate_chart" value="true">
+              <label class="form-check-label" for="generate_chart">Generate Chart</label>
+            </div>
+            <!-- <input type="submit" value="Submit"> -->
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form> 
+        </div>       
+      </div>
     </div>
 
     <!-- Optional JavaScript -->
