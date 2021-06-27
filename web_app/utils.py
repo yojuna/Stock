@@ -17,6 +17,38 @@ pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
 # plt.style.use('seaborn')
 
+
+
+def get_yfinance_data(ticker, start_date, end_date):
+	sd = datetime(*[int(x) for x in start_date.split("-")])
+	ed = datetime(*[int(x) for x in end_date.split("-")])
+	df = yf.download(tickers=ticker, start=sd, end=ed, interval=interval)
+
+	return df
+
+
+def set_data(yf_df):
+	df = yf_df.reset_index()
+	df['Date'] = df['Datetime'].map(lambda x: pd.to_datetime(x).date())
+	df['Time'] = df['Datetime'].map(lambda x: pd.to_datetime(x).time())
+	df = df.drop(['Datetime'], axis = 1)
+	df['date_time'] = df['Date'].map(lambda x:str(x.month)) + '-' + df['Date'].map(lambda x:str(x.day)) + ' ' + df['Time'].map(lambda x:str(x.hour)) + ":" +  df['Time'].map(lambda x:str(x.minute))
+	col_order = ['Date','Time','Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume', 'date_time']
+	return df[col_order]
+
+
+
+def download_data(df, ticker, ed):
+	file_name = ticker + ' ' + str(ed.month) + '-' + str(ed.day) + '.xlsx'
+	df.to_excel(file_name)
+	print('Saved file to disk as: ', file_name)
+	# if file_ext == 'xlsx':
+	# 	file_name = ticker + ' ' + str(ed.month) + '-' + str(ed.day) + '.xlsx'
+	# else if file_ext == 'csv':
+	# 	file_name = ticker + ' ' + str(ed.month) + '-' + str(ed.day) + '.csv'
+
+
+
 class describe_data:
 
 	def __init__(self, ticker, start_date, end_date, interval, download_data):
@@ -42,7 +74,7 @@ class describe_data:
 			self.df[self.col_order].to_excel(file_name)
 		else:
 			pass
-		print(self.df)
+		# print(self.df)
 		return self.df
 
 	def plot_data(self):
@@ -69,7 +101,7 @@ class describe_data:
 
 		# st.plotly_chart(fig, figwidth=1100,height=900)
 
-		# plt.show()
+		plt.show()
 
 
 

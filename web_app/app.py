@@ -18,7 +18,7 @@ default_end = str(datetime.now().year) + "-" + str(datetime.now().month) + "-" +
 @app.route('/')
 def index():
     return redirect(url_for('data_request'))
-    # return render_template('index.html')
+    # return render_template('requestForm.html')
 
 # More powerful approach using WTForms
 class DataRequestForm(FlaskForm):
@@ -40,6 +40,14 @@ def data_request():
         input_interval = form.input_interval.data
         download = form.download.data
 
+        print('**********')
+        print(input_ticker)
+        print(input_start_date)
+        print(input_end_date)
+        print(input_interval)
+        print(download)
+        print('**********')        
+
         if len(input_ticker) == 0 or len(input_start_date) == 0 or len(input_end_date) == 0 or len(input_interval) == 0:
             error = "Please supply all fields"
         else:
@@ -47,9 +55,11 @@ def data_request():
             # print(download)
             d = describe_data(input_ticker, input_start_date, input_end_date, input_interval, download)
             d.get_data()
-            return redirect(url_for('data_request'))
+            # d.plot_data()
+            # return redirect(url_for('data_request'))
 
-    return render_template('DataRequestForm.html', form=form, message=error)
+    return render_template('requestForm.html', form=form, message=error)
+    # return render_template('requestForm.html', message=error)
 
 
 if __name__ == "__main__":
