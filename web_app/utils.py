@@ -8,6 +8,9 @@
 import yfinance as yf
 from datetime import datetime, timedelta
 import pandas as pd
+import os
+from flask_wtf import FlaskForm
+from wtforms import TextField, BooleanField
 # import matplotlib.pyplot as plt
 # import streamlit as st
 
@@ -73,9 +76,24 @@ class describe_data:
 
 		plt.show()
 
+default_start = str(datetime.now().year) + "-" + str(datetime.now().month) + "-" + str(datetime.now().day-2)
+default_end = str(datetime.now().year) + "-" + str(datetime.now().month) + "-" + str(datetime.now().day-1)
+
+class DataRequestForm(FlaskForm):
+    input_ticker = TextField('Ticker', default = 'TATAMOTORS.NS')
+    input_start_date = TextField('Start Date', default = default_start)
+    input_end_date = TextField('End Date', default=default_end)
+    input_interval = TextField('Interval', default='5m')
+    download = BooleanField('Download Data')
+    generate_chart = BooleanField('Generate Chart')
 
 
-
+def bytes_to_wavfile(bytes_obj):
+    file_name = os.path.join('web_app', 'static', (str(datetime.now())+'.wav').replace(' ', '_'))
+    with open(file_name, mode='bx') as f:
+        f.write(bytes_obj)
+    f.close()
+    print('saved .wav file at: ', file_name)
 
 # default_start = str(datetime.now().year) + "-" + str(datetime.now().month) + "-" + str(datetime.now().day-1)
 # default_end = str(datetime.now().year) + "-" + str(datetime.now().month) + "-" + str(datetime.now().day)

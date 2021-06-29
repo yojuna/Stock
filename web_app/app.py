@@ -1,26 +1,22 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_wtf import FlaskForm
-from wtforms import TextField, BooleanField
+# from flask_wtf import FlaskForm
+# from wtforms import TextField, BooleanField
 from datetime import datetime, timedelta
-from utils import describe_data
+from utils import describe_data, bytes_to_wavfile, DataRequestForm, default_start, default_end
+
+from flask_cors import CORS
+
+import os
 
 app = Flask(__name__)
+
+cors = CORS(app)
+
 app.config['SECRET_KEY'] = 'our very hard to guess secretfir'
 app.config['ENV'] = 'development'
 app.config['DEBUG'] = True
 app.config['TESTING'] = True
 
-
-default_start = str(datetime.now().year) + "-" + str(datetime.now().month) + "-" + str(datetime.now().day-2)
-default_end = str(datetime.now().year) + "-" + str(datetime.now().month) + "-" + str(datetime.now().day-1)
-
-class DataRequestForm(FlaskForm):
-    input_ticker = TextField('Ticker', default = 'TATAMOTORS.NS')
-    input_start_date = TextField('Start Date', default = default_start)
-    input_end_date = TextField('End Date', default=default_end)
-    input_interval = TextField('Interval', default='5m')
-    download = BooleanField('Download Data')
-    generate_chart = BooleanField('Generate Chart')
 
 @app.route('/')
 def index():
@@ -53,9 +49,20 @@ def data_request():
 
     return render_template('requestForm.html', default_start=default_start, default_end=default_end)
 
+
+
+
 @app.route('/recorder')
 def recorder():
     return render_template('speechRecorder.html')
+
+
+@app.route("/audioUpload", methods=['POST'])
+def audio_upload():
+    if request.method == 'POST':
+        bytes_to_wavfile(request.data)
+    return "saved file to disk."
+
 
 
 if __name__ == "__main__":

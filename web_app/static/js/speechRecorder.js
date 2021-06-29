@@ -15,6 +15,19 @@ stop.disabled = true;
 let audioCtx;
 const canvasCtx = canvas.getContext("2d");
 
+// blob to backend as form
+
+const sendAudioFile = file => {
+  // const formData = new FormData();
+  // formData.append('audiofile', file);
+  // console.log('sendAudioFile', formData)
+  fetch('http://localhost:5000/audioUpload', {
+    method: 'POST',
+    body: file
+  });
+};
+
+
 //main block for doing the audio recording
 
 if (navigator.mediaDevices.getUserMedia) {
@@ -50,11 +63,17 @@ if (navigator.mediaDevices.getUserMedia) {
       record.disabled = false;
     }
 
+    mediaRecorder.ondataavailable = function(e) {
+      console.log(e.data)
+      chunks.push(e.data);
+    }
+
+
     mediaRecorder.onstop = function(e) {
       console.log("data available after MediaRecorder.stop() called.");
 
-      const clipName = prompt('Enter a name for your sound clip?','My unnamed clip');
-
+      // const clipName = prompt('Enter a name for your sound clip?','My unnamed clip');
+      const clipName = 'testclip'
       const clipContainer = document.createElement('article');
       const clipLabel = document.createElement('p');
       const audio = document.createElement('audio');
@@ -77,11 +96,15 @@ if (navigator.mediaDevices.getUserMedia) {
       soundClips.appendChild(clipContainer);
 
       audio.controls = true;
-      const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+      const blob = new Blob(chunks, { 'type' : 'audio/wav' });
+      // const blob = new Blob(chunks, { 'type':'audio/mp3' });
       chunks = [];
       const audioURL = window.URL.createObjectURL(blob);
       audio.src = audioURL;
       console.log("recorder stopped");
+      sendAudioFile(blob);
+      console.log("blob posted");
+
 
       deleteButton.onclick = function(e) {
         let evtTgt = e.target;
@@ -97,11 +120,19 @@ if (navigator.mediaDevices.getUserMedia) {
           clipLabel.textContent = newClipName;
         }
       }
+
+      // analyzeButton.onclick = function() {
+      //   console.log('click hua re!')
+      //   console.log(blob)
+      //   sendAudioFile(blob);
+      // }
+
     }
 
-    mediaRecorder.ondataavailable = function(e) {
-      chunks.push(e.data);
-    }
+    // mediaRecorder.ondataavailable = function(e) {
+    //   console.log(e.data)
+    //   chunks.push(e.data);
+    // }
   }
 
   let onError = function(err) {
