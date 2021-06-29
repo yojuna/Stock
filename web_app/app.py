@@ -53,6 +53,10 @@ def data_request():
 
     return render_template('requestForm.html', default_start=default_start, default_end=default_end)
 
+@app.route('/recorder')
+def recorder():
+    return render_template('speechRecorder.html')
+
 
 if __name__ == "__main__":
     # Run the application

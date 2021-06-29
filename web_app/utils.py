@@ -8,13 +8,13 @@
 import yfinance as yf
 from datetime import datetime, timedelta
 import pandas as pd
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 # import streamlit as st
 
 
-from matplotlib.widgets import Cursor
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
+# from matplotlib.widgets import Cursor
+# pd.set_option('display.max_rows', None)
+# pd.set_option('display.max_columns', None)
 # plt.style.use('seaborn')
 
 

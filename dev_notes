@@ -4,3 +4,20 @@ DEV NOTES
 
 2. plotting functionality
 3. speech recognition feature
+
+
+---
+
+Feature branch:
+
+speech_recognition_feature
+
+1 -> implement this (https://developer.mozilla.org/en-US/docs/Web/API/MediaStream_Recording_API/Using_the_MediaStream_Recording_API) example of a web dictaphone
+
+2 -> implement the basic speech_recognition library example
+
+3 -> use the recorded audio sample from 1 and use it to make inference from 2
+
+4 -> cleanup useless/excess features code
+
+5 -> [fancy UI feature; not core functionality] add realtime visualization of audio levels >> https://speckyboy.com/audio-visualization-code-snippets/ 
