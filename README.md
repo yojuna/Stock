@@ -8,14 +8,14 @@
 
 ## Chart UI
 
-![Chart UI](https://github.com/yojuna/Stock/blob/flask_migration_base_app/web_app/static/images/Charting.png)
+![Chart UI](./web_app/static/images/Charting.png)
 
 ---
 
 ## Speech Recogntion Module
 
 #### Voice Recorder Page
-![Recorder Page](https://github.com/yojuna/Stock/blob/flask_migration_base_app/web_app/static/images/recorder_page.png)
+![Recorder Page](./web_app/static/images/recorder_page.png)
 
 #### Inference backend
-![Inference backend](https://github.com/yojuna/Stock/blob/flask_migration_base_app/web_app/static/images/speech_recognition.png)
+![Inference backend](./web_app/static/images/speech_recognition.png)
