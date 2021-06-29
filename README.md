@@ -2,7 +2,7 @@
 
 ## Ticker UI
 
-![Ticker UI](https://github.com/yojuna/Stock/blob/flask_migration_base_app/web_app/static/images/heloo.png)
+![Ticker UI](./web_app/static/images/heloo.png)
 
 ---
 
