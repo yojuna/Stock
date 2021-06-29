@@ -11,9 +11,8 @@ import pandas as pd
 import os
 from flask_wtf import FlaskForm
 from wtforms import TextField, BooleanField
-# import matplotlib.pyplot as plt
-# import streamlit as st
-
+import subprocess
+import speech_recognition as sr
 
 # from matplotlib.widgets import Cursor
 # pd.set_option('display.max_rows', None)
@@ -80,24 +79,67 @@ default_start = str(datetime.now().year) + "-" + str(datetime.now().month) + "-"
 default_end = str(datetime.now().year) + "-" + str(datetime.now().month) + "-" + str(datetime.now().day-1)
 
 class DataRequestForm(FlaskForm):
-    input_ticker = TextField('Ticker', default = 'TATAMOTORS.NS')
-    input_start_date = TextField('Start Date', default = default_start)
-    input_end_date = TextField('End Date', default=default_end)
-    input_interval = TextField('Interval', default='5m')
-    download = BooleanField('Download Data')
-    generate_chart = BooleanField('Generate Chart')
+	input_ticker = TextField('Ticker', default = 'TATAMOTORS.NS')
+	input_start_date = TextField('Start Date', default = default_start)
+	input_end_date = TextField('End Date', default=default_end)
+	input_interval = TextField('Interval', default='5m')
+	download = BooleanField('Download Data')
+	generate_chart = BooleanField('Generate Chart')
 
 
 def bytes_to_wavfile(bytes_obj):
-    file_name = os.path.join('web_app', 'static', (str(datetime.now())+'.wav').replace(' ', '_'))
-    with open(file_name, mode='bx') as f:
-        f.write(bytes_obj)
-    f.close()
-    print('saved .wav file at: ', file_name)
+	# add filepath variables as config later, to make this more general
+	# right now this function returns the filename
+	# to be used for the 'convert_webm_to_wav' function
+	# NOTE: separate this functionality
+	file_ext = '.webm'
+	_name = (str(datetime.now()).replace('-', '_').replace(' ', '_').replace(':', '_')).split('.')[0]
+	file_path = os.path.join('web_app', 'static', _name) 
+	file_name = file_path + file_ext
+	with open(file_name, mode='bx') as f:
+		f.write(bytes_obj)
+	f.close()
+	print('saved .webm file at: ', file_name)
+	return file_path
 
+
+def convert_webm_to_wav(infile, outfile):
+	command = ['ffmpeg', '-i', infile, '-vn', outfile]
+	subprocess.run(command, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+	print('------------- conversion complete-------------------')
+
+
+def clean_directory(infile, outfile):
+	os.remove(infile)
+	os.remove(outfile)
+	print('cleaned clean_directory. deleted files: ', infile, ' & ', outfile)
 # default_start = str(datetime.now().year) + "-" + str(datetime.now().month) + "-" + str(datetime.now().day-1)
 # default_end = str(datetime.now().year) + "-" + str(datetime.now().month) + "-" + str(datetime.now().day)
 
+
+def recognize_speech(AUDIO_FILE):
+    # use the audio file as the audio source
+    r = sr.Recognizer()
+    with sr.AudioFile(AUDIO_FILE) as source:
+        audio = r.record(source)  # read the entire audio file
+    # recognize speech using Google Speech Recognition
+    try:
+        # for testing purposes, we're just using the default API key
+        # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
+        # instead of `r.recognize_google(audio)`
+        speech = r.recognize_google(audio)
+        print('* * * * *')
+        print('\n')
+        print("Google Speech Recognition prediction >> " + speech)
+        print('\n')
+        print('* * * * *')
+        return speech
+    except sr.UnknownValueError:
+        print("Google Speech Recognition could not understand audio")
+        return "Google Speech Recognition could not understand audio"
+    except sr.RequestError as e:
+        print("Could not request results from Google Speech Recognition service; {0}".format(e))
+        return "Could not request results from Google Speech Recognition service; {0}".format(e)    
 
 
 # st.write("Enter yfinance Company Ticker")

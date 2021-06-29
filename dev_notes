@@ -21,6 +21,10 @@ Feature branch:
 
 3. use the recorded audio sample from 1 and use it to make inference from 2
 
+>> Done till here. 4 & 5 remain.
+
 4. cleanup useless/excess features code
 
 5. [fancy UI feature; not core functionality] add realtime visualization of audio levels >> https://speckyboy.com/audio-visualization-code-snippets/ 
+
+6. Refactor. Refactor. Refactor.
